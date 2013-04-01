@@ -1,6 +1,6 @@
 var main = function () {
-    $.getJSON("/counts.json", function (response) {
-        $("body").append("<p>awesome:"+response.awesome+"</p>");
+    $.getJSON("/counts.json", function (elt) {
+        $("body").append("<p>" + elt.key + ":" + elt.count + "</p>");
     });
 };
 

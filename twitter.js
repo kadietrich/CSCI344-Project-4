@@ -1,4 +1,4 @@
-var worker = function (){
+var worker = function (words){
     var twitter = require('ntwitter');
     var redis = require('redis');
     var credentials = require('./credentials.js');

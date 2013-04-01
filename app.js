@@ -6,10 +6,11 @@ var express = require("express"),
     twitterWorker = require ("./twitter.js"),
     app = express();
     
-var words = ["fun", "games", "april fools"];
-    //var happyTerms = ['happy', 'excited', 'fun', 'glad', 'good'];
+//var words = ["fun", "games", "april fools"];
+var happyTerms = ['happy', 'excited', 'fun', 'glad', 'good'];
 //var sadTerms = ['sad', 'depressed', 'crying', 'bad'];
-// This is our basic configuration                                                                                                                     
+// This is our basic configuration 
+twitterWorker(happyTerms);
 app.configure(function () {
     // Define our static file directory, it will be 'public'                                                                                           
     app.use(express.static(path.join(__dirname, 'public')));
@@ -25,21 +26,21 @@ app.get("/", function (req, res) {
     res.send("Hello World!");
 });
 app.get("/counts.json", function	(req, res) {
-    redisClient.mget(words, function	(error, counts) {
+    redisClient.mget(happyTerms, function	(error, counts) {
         if (error !== null) {
             // handle error here                                                                                                                       
             console.log("ERROR: " + error);
         } else {
             var result= [],
                 i;
-            for(i=0; i < words.length; i = i +1){
+            for(i=0; i < happyTerms.length; i = i +1){
                 result.push({
-                  "key":words[i],
+                  "key":happyTerms[i],
                   "count":counts[i]
                 });
             }
             // use res.json to return JSON objects instead of strings
-            res.json(jsonObject);
+            res.json(result);
         }
     });
 });
