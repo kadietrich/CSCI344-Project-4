@@ -3,10 +3,12 @@ var express = require("express"),
     http = require("http"),
     path = require("path"),
     redisClient = require ("redis").createClient(),
+    twitterWorker = require ("./twitter.js"),
     app = express();
     
-var happyTerms = ['happy', 'excited', 'fun', 'glad', 'good'];
-var sadTerms = ['sad', 'depressed', 'crying', 'bad'];
+var words = ["fun", "games", "april fools"];
+    //var happyTerms = ['happy', 'excited', 'fun', 'glad', 'good'];
+//var sadTerms = ['sad', 'depressed', 'crying', 'bad'];
 // This is our basic configuration                                                                                                                     
 app.configure(function () {
     // Define our static file directory, it will be 'public'                                                                                           
@@ -23,34 +25,19 @@ app.get("/", function (req, res) {
     res.send("Hello World!");
 });
 app.get("/counts.json", function	(req, res) {
-    redisClient.get("awesome", function	(error, awesomeCount) {
+    redisClient.mget(words, function	(error, counts) {
         if (error !== null) {
             // handle error here                                                                                                                       
             console.log("ERROR: " + error);
         } else {
-            var jsonObject = {
-                "awesome":awesomeCount
-            };
-            // use res.json to return JSON objects instead of strings
-            res.json(jsonObject);
-        }
-    });
-});
-app.get("/happycounts.json", function	(req, res) {
-    redisClient.mget(happyTerms, function	(error, happyCount) {
-        var i = 0;
-        if (error !== null) {
-            // handle error here                                                                                                                       
-            console.log("ERROR: " + error);
-        } else {
-            happyCount.forEach( function(elt) {
-                var stuff = happyTerms[i];
-                var jsonObject = {
-                    stuff:elt
-                };
-            i++;  
-            });
-            
+            var result= [],
+                i;
+            for(i=0; i < words.length; i = i +1){
+                result.push({
+                  "key":words[i],
+                  "count":counts[i]
+                });
+            }
             // use res.json to return JSON objects instead of strings
             res.json(jsonObject);
         }
