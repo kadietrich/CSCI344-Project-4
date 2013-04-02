@@ -6,11 +6,11 @@ var express = require("express"),
     twitterWorker = require ("./twitter.js"),
     app = express();
     
-//var words = ["fun", "games", "april fools"];
+var trackedTerms = ['happy', 'excited', 'fun', 'glad', 'good', 'sad', 'depressed', 'crying', 'bad', 'unhappy'];
 var happyTerms = ['happy', 'excited', 'fun', 'glad', 'good'];
-//var sadTerms = ['sad', 'depressed', 'crying', 'bad'];
+var sadTerms = ['sad', 'depressed', 'crying', 'bad', 'unhappy'];
+twitterWorker(trackedTerms);
 // This is our basic configuration 
-twitterWorker(happyTerms);
 app.configure(function () {
     // Define our static file directory, it will be 'public'                                                                                           
     app.use(express.static(path.join(__dirname, 'public')));
@@ -21,11 +21,7 @@ http.createServer(app).listen(3000, function(){
     console.log("Express server listening on port 3000");
 });
 
-app.get("/", function (req, res) {
-    //send "Hello World" to the client as html
-    res.send("Hello World!");
-});
-app.get("/counts.json", function	(req, res) {
+app.get("/happyCounts.json", function	(req, res) {
     redisClient.mget(happyTerms, function	(error, counts) {
         if (error !== null) {
             // handle error here                                                                                                                       
@@ -36,6 +32,46 @@ app.get("/counts.json", function	(req, res) {
             for(i=0; i < happyTerms.length; i = i +1){
                 result.push({
                   "key":happyTerms[i],
+                  "count":counts[i]
+                });
+            }
+            // use res.json to return JSON objects instead of strings
+            res.json(result);
+        }
+    });
+});
+
+app.get("/sadCounts.json", function	(req, res) {
+    redisClient.mget(sadTerms, function	(error, counts) {
+        if (error !== null) {
+            // handle error here                                                                                                                       
+            console.log("ERROR: " + error);
+        } else {
+            var result= [],
+                i;
+            for(i=0; i < sadTerms.length; i = i +1){
+                result.push({
+                  "key":sadTerms[i],
+                  "count":counts[i]
+                });
+            }
+            // use res.json to return JSON objects instead of strings
+            res.json(result);
+        }
+    });
+});
+
+app.get("/counts.json", function	(req, res) {
+    redisClient.mget(trackedTerms, function	(error, counts) {
+        if (error !== null) {
+            // handle error here                                                                                                                       
+            console.log("ERROR: " + error);
+        } else {
+            var result= [],
+                i;
+            for(i=0; i < trackedTerms.length; i = i +1){
+                result.push({
+                  "key":trackedTerms[i],
                   "count":counts[i]
                 });
             }
