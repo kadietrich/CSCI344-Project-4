@@ -9,6 +9,7 @@ var express = require("express"),
 var trackedTerms = ['happy', 'excited', 'fun', 'glad', 'good', 'sad', 'depressed', 'crying', 'bad', 'unhappy'];
 var happyTerms = ['happy', 'excited', 'fun', 'glad', 'good'];
 var sadTerms = ['sad', 'depressed', 'crying', 'bad', 'unhappy'];
+
 twitterWorker(trackedTerms);
 // This is our basic configuration 
 app.configure(function () {
@@ -47,6 +48,7 @@ app.get("/happyTotal.json", function (req, res) {
             console.log("ERROR: " + error);
         } else {
             var total = 0,
+                result,
                 i;
             for(i=0; i < happyTerms.length; i = i +1){
                 result = {
@@ -84,10 +86,11 @@ app.get("/sadTotal.json", function (req, res) {
             console.log("ERROR: " + error);
         } else {
             var total = 0,
+                result,
                 i;
             for(i=0; i < sadTerms.length; i = i +1){
                 result = {
-                    "count":total += parseInt(counts[i]) 
+                  "count":total += parseInt(counts[i]) 
                 }               
             }
         }
