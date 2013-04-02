@@ -41,6 +41,23 @@ app.get("/happyCounts.json", function	(req, res) {
     });
 });
 
+app.get("/happyTotal.json", function (req, res) {
+    redisClient.mget(happyTerms, function (error, counts) {
+        if (error !== null) {
+            console.log("ERROR: " + error);
+        } else {
+            var total = 0,
+                i;
+            for(i=0; i < happyTerms.length; i = i +1){
+                result = {
+                    "count":total += parseInt(counts[i]) 
+                }               
+            }
+        }
+        res.json(result);
+    });
+});
+
 app.get("/sadCounts.json", function	(req, res) {
     redisClient.mget(sadTerms, function	(error, counts) {
         if (error !== null) {
@@ -58,6 +75,23 @@ app.get("/sadCounts.json", function	(req, res) {
             // use res.json to return JSON objects instead of strings
             res.json(result);
         }
+    });
+});
+
+app.get("/sadTotal.json", function (req, res) {
+    redisClient.mget(sadTerms, function (error, counts) {
+        if (error !== null) {
+            console.log("ERROR: " + error);
+        } else {
+            var total = 0,
+                i;
+            for(i=0; i < sadTerms.length; i = i +1){
+                result = {
+                    "count":total += parseInt(counts[i]) 
+                }               
+            }
+        }
+        res.json(result);
     });
 });
 
