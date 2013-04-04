@@ -1,0 +1,36 @@
+body {
+  font-family: 'Droid Sans', sans-serif;
+  text-align: center;
+}
+p {
+  padding: 7px;
+}
+h1 {
+  font-size: 200%;
+  color: #033E6B;
+  font-style: bold;
+  text-decoration: underline;
+  padding: 10px;
+}
+h2 {
+  font-size: 150%;
+  color: #3F92D2;
+  font-style: italic;
+  padding: 10px;
+}
+h3 {
+  font-size: 125%;
+  color: #00B060;
+  padding: 5px;
+}
+.container {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#happyList {
+
+}
+#sadList {
+
+}
