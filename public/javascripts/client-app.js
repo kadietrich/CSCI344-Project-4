@@ -1,25 +1,20 @@
 var main = function () {
-    $.getJSON("/counts.json", function (object) {
-        object.forEach( function(elt){
-            $("body").append("<p>" + elt.key + " : " + elt.count + "</p>");
-        });        
-    });
-    /*
-    if(happyTotal > sadTotal){
-        $("body").append("<p>Today is a happy day :)</p>");
-    } else if(sadTotal > happyTotal){
-        $("body").append("<p>Today is a sad day :'(</p>");
-    } else {
-        $("body").append("<p>Today isn't especially happy or sad.</p>");
-    }
-    */
-      $.getJSON("/happyTotal.json", function (object) {
-        $("#happy").append("<p>Happy total: "+ object.count + "</p>");
-      });
-      
-      $.getJSON("/sadTotal.json", function (object) {
-        $("#sad").append("<p>Sad total: "+ object.count + "</p>");
-      });
+    $.getJSON("/happyTotal.json", function (object) {
+        var happyTotal = parseInt(object.count);
+        $("#happy").append("<p>The total happy count is: " + object.count + "</p>");
+        
+        $.getJSON("/sadTotal.json", function (result) {
+            var sadTotal = parseInt(result.count);
+            $("#sad").append("<p>The sad count is: " + result.count + "</p>");
+            if ( happyTotal > sadTotal) {
+                $("#overall").append("<p>Today is a happy day.</p>");
+            } else if (sadTotal > happyTotal) {
+                $("#overall").append("<p>Today is a sad day.</p>");
+            } else {
+                $("#overall").append("<p>Today isn't a happy or sad day.</p>");
+            }
+        });
+    }); 
 };
 
 $(document).ready(main);
