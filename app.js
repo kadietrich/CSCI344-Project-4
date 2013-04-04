@@ -6,7 +6,7 @@ var express = require("express"),
     twitterWorker = require ("./twitter.js"),
     app = express();
     
-var happyTerms = ['happy', 'excited', 'fun', 'glad', 'good'];
+var happyTerms = ['happy', 'excited', 'fun', 'glad', 'blessed'];
 var sadTerms = ['sad', 'depressed', 'crying', 'bad', 'unhappy'];
 var trackedTerms= happyTerms.concat(sadTerms);
 
